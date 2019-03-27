@@ -1,0 +1,118 @@
+<!-- 头部 start -->
+<script src="js/getParameter.js"></script>
+<script>
+
+
+
+    $(function () {
+        //登陆显示用户的名字，发送ajax请求
+        $.get("user/find",{},function (data) {
+            if(data==null){
+                $("#sp").html("");
+                $("#favorite").css("display","none");
+                $("#tc").css("display","none");
+
+            }else{
+                $("#sp").html("欢迎你,"+data.name);
+                $("#login").css("display","none")
+
+            }
+
+
+        },"json")
+
+        //用户退出
+       $("#tc").click(function () {
+           //直接进行跳转，
+           //推出之后是需要页面跳转的，所以我们必须要同步请求，不能异步请求，不然页面不会进行跳转
+           location.href="user/destory";
+       })
+
+
+        //ajax请求导航条
+        $.get("category/finddaohangtiao",{},function (data) {
+            var li = '<li class="nav-active"><a href="index.html">首页</a></li>';
+            $(data).each(function (index,ele) {
+                var lia = '<li><a href="route_list.html?cid='+ele.cid+'">'+ele.cname+'</a></li>';
+                li += lia;
+            })
+            li +='<li><a href="favoriterank.html">收藏排行榜</a></li>';
+
+            $("#categoryid").html(li);
+        },"json")
+
+        //模糊查询线路
+        $("#search").click(function () {
+            var rname = $("#input").val();
+            var cid = getParameter("cid");
+            //路径直接跳转到route_list,然后会在route_list上，等route_list页面加载完成之后就会进行ajax请求
+            location.href="route_list.html?cid="+cid+"&rname="+rname;
+        })
+
+
+        $("#favorite").click(function () {
+            $.get("route/myfavorite",{},function (data) {
+
+            })
+        })
+
+
+    })
+
+</script>
+    <header id="header">
+        <div class="top_banner">
+            <img src="images/top_banner.jpg" alt="">
+        </div>
+        <div class="shortcut">
+            <!-- 未登录状态  -->
+            <div class="login_out">
+                <a href="login.html" id="login">登录</a>
+                <a href="register.html">注册</a>
+            </div>
+            <!-- 登录状态  -->
+            <div class="login">
+            	
+                <span id="sp"></span>
+                <a href="myfavorite.html" class="collection" id="favorite">我的收藏</a>
+                <a href="javascript:void(0)" id="tc">退出</a>
+            </div>
+        </div>
+        <div class="header_wrap">
+            <div class="topbar">
+                <div class="logo">
+                    <a href="/"><img src="images/logo.jpg" alt=""></a>
+                </div>
+                <div class="search">
+                    <input  id="input" name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
+                    <a id="search" href="javascript:;" class="search-button">搜索</a>
+                </div>
+                <div class="hottel">
+                    <div class="hot_pic">
+                        <img src="images/hot_tel.jpg" alt="">
+                    </div>
+                    <div class="hot_tel">
+                        <p class="hot_time">客服热线(9:00-6:00)</p>
+                        <p class="hot_num">400-618-9090</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 头部 end -->
+     <!-- 首页导航 -->
+    <div class="navitem">
+        <ul class="nav" id="categoryid">
+            <!--<li class="nav-active"><a href="index.html">首页</a></li>-->
+            <!--<li><a href="route_list.html">门票</a></li>-->
+            <!--<li><a href="route_list.html">酒店</a></li>-->
+            <!--<li><a href="route_list.html">香港车票</a></li>-->
+            <!--<li><a href="route_list.html">出境游</a></li>-->
+            <!--<li><a href="route_list.html">国内游</a></li>-->
+            <!--<li><a href="route_list.html">港澳游</a></li>-->
+            <!--<li><a href="route_list.html">抱团定制</a></li>-->
+            <!--<li><a href="route_list.html">全球自由行</a></li>-->
+            <!--<li><a href="favoriterank.html">收藏排行榜</a></li>-->
+        </ul>
+    </div>
+    
